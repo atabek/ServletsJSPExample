@@ -15,8 +15,17 @@ public class ServletExample extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
+		if (request.getParameter("firstname") == null || request.getParameter("lastname") == null){
+			getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+			return;
+		}
+		
 		String firstName = request.getParameter("firstname");
 		String lastName  = request.getParameter("lastname");
-		out.println(firstName + " " + lastName);
+		
+		request.setAttribute("firstname", firstName);
+		request.setAttribute("lastname",  lastName);
+		
+		getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
 	}
 }
